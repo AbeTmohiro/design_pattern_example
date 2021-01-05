@@ -122,6 +122,35 @@ class Movie < AdTemplate
 end
 ```
 
+### アンチパターン:条件分岐のみのコード
+
+```ruby
+class Template
+    @header = '<header>株式会社〇〇</header>'
+    @footer = '<footer>詳しくはコチラ</footer>'
+  def return_html(ad_type, image_count)
+    @html = ''
+    @html += '<header>株式会社〇〇</header>'
+    if ad_type == "gif" && image_count == 2
+      @html += '<iframe id="player1" type="text/html" width="700px" height="350px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
+      @html += '<iframe id="player2" type="text/html" width="700px" height="350px" src="/assets/ad_gif2.png" frameborder="0"></iframe>'
+
+    elsif ad_type == "gif" && image_count == 1
+      @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
+
+    elsif ad_type == "image"
+      @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_image.png" frameborder="0"></iframe>'
+
+    elsif ad_type == "movie"
+      @html += '<iframe id="player" type="text/html" width="500px" height="500px" src="/assets/ad_movie.png" frameborder="0"></iframe>'
+
+    end
+    @html += '<footer>詳しくはコチラ</footer>'
+
+    return @html.html_safe
+  end
+end
+```
 
 * Ruby version
 
