@@ -126,8 +126,6 @@ end
 
 ```ruby
 class AdTemplate
-    @header = '<header>株式会社〇〇</header>'
-    @footer = '<footer>詳しくはコチラ</footer>'
   def return_html(ad_type, image_count)
     @html = ''
     @html += '<header>株式会社〇〇</header>'
