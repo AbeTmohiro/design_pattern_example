@@ -125,6 +125,13 @@ end
 ### アンチパターン:条件分岐のみのコード
 
 ```ruby
+module AdsHelper
+  def ad(ad_type, image_count)
+    ad = AdTemplate.new
+    ad.return_html(ad_type,image_count)
+  end
+end
+
 class AdTemplate
   def return_html(ad_type, image_count)
     @html = ''
