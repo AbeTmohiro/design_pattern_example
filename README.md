@@ -23,9 +23,20 @@ rails s
 ```ruby
 class AdsController < ApplicationController
   def index
-    ad_types = ["gif","image","movie"]
+    choose_ad_types
+    choose_image_counts
+  end
+
+  private
+  def choose_ad_types
+    ad_types = ["gif", "image", "movie"]
+    # sampleメソッドを使って配列の中身をランダムに取得
     @ad_type = ad_types.sample
-    image_counts = [1,2]
+  end
+
+  def choose_image_counts
+    image_counts = [1, 2]
+    # sampleメソッドを使って配列の中身をランダムに取得
     @image_count = image_counts.sample
   end
 end
@@ -52,33 +63,37 @@ end
 ### TemplateMethodパターンを使った場合のコード
 
 ```ruby
-class Template
+class AdTemplate
   def initialize
     @header = '<header>株式会社〇〇</header>'
     @footer = '<footer>詳しくはコチラ</footer>'
-    @html = ''
+    @body = ''
   end
-  def return_html
-    raise "Called abstract method :return_html"
+
+  def return_body
+    raise "Call Abstract Method :return_body"
+  end
+
+  def return_html(ad_type, image_count)
+    return_body(ad_type, image_count)
+    @html = ''
+    @html = @header + @body + @footer
+    @html.html_safe
   end
 end
-class Gif < Template
+class Gif < AdTemplate
   def return_src_2
     # ２枚パターン
-    @html += @header
-    @html += '<iframe id="player1" type="text/html" width="700px" height="350px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
-    @html += '<iframe id="player2" type="text/html" width="700px" height="350px" src="/assets/ad_gif2.png" frameborder="0"></iframe>'
-    @html += @footer
-    return @html.html_safe
+    @body += '<iframe id="player1" type="text/html" width="700px" height="350px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
+    @body += '<iframe id="player2" type="text/html" width="700px" height="350px" src="/assets/ad_gif2.png" frameborder="0"></iframe>'
+    return @body
   end
   def return_src_1
     # １枚パターン
-    @html += @header
-    @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
-    @html += @footer
-    return @html.html_safe
+    @body += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
+    return @body
   end
-  def return_html(ad_type, image_count)
+  def return_body(ad_type, image_count)
     if image_count == 2
       return_src_2
     else
@@ -86,57 +101,23 @@ class Gif < Template
     end
   end
 end
-class Image < Template
+class Image < AdTemplate
   def return_src
-    @html += @header
-    @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_image.png" frameborder="0"></iframe>'
-    @html += @footer
-    return @html.html_safe
+    @body += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_image.png" frameborder="0"></iframe>'
+    return @body
   end
-  def return_html(ad_type, image_count)
+  def return_body(ad_type, image_count)
     return_src
   end
 end
 
-class Movie < Template
+class Movie < AdTemplate
   def return_src
-    @html += @header
-    @html += '<iframe id="player" type="text/html" width="500px" height="500px" src="/assets/ad_movie.png" frameborder="0"></iframe>'
-    @html += @footer
-    return @html.html_safe
+    @body += '<iframe id="player" type="text/html" width="500px" height="500px" src="/assets/ad_movie.png" frameborder="0"></iframe>'
+    return @body
   end
-  def return_html(ad_type, image_count)
+  def return_body(ad_type, image_count)
     return_src
-  end
-end
-```
-
-### アンチパターン:条件分岐のみのコード
-
-```ruby
-class Template
-    @header = '<header>株式会社〇〇</header>'
-    @footer = '<footer>詳しくはコチラ</footer>'
-  def return_html(ad_type, image_count)
-    @html = ''
-    @html += '<header>株式会社〇〇</header>'
-    if ad_type == "gif" && image_count == 2
-      @html += '<iframe id="player1" type="text/html" width="700px" height="350px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
-      @html += '<iframe id="player2" type="text/html" width="700px" height="350px" src="/assets/ad_gif2.png" frameborder="0"></iframe>'
-
-    elsif ad_type == "gif" && image_count == 1
-      @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
-
-    elsif ad_type == "image"
-      @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_image.png" frameborder="0"></iframe>'
-
-    elsif ad_type == "movie"
-      @html += '<iframe id="player" type="text/html" width="500px" height="500px" src="/assets/ad_movie.png" frameborder="0"></iframe>'
-
-    end
-    @html += '<footer>詳しくはコチラ</footer>'
-
-    return @html.html_safe
   end
 end
 ```
