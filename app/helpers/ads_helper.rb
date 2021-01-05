@@ -15,14 +15,22 @@ end
 
 # -------------- #
 
-class Template
+class AdTemplate
   def initialize
     @header = '<header>株式会社〇〇</header>'
     @footer = '<footer>詳しくはコチラ</footer>'
-    @html = ''
+    @body = ''
   end
-  def return_html
-    raise "Called abstract method :return_html"
+
+  def return_body
+    raise "Call Abstract Method :return_body"
+  end
+
+  def return_html(ad_type, image_count)
+    return_body(ad_type, image_count)
+    @html = ''
+    @html = @header + @body + @footer
+    @html.html_safe
   end
 end
 class Gif < Template
