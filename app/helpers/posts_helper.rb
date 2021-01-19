@@ -1,9 +1,7 @@
 module PostsHelper
-  
+
   attr_reader :ad_type, :image_count
   def ad
-    # ad_type = RandomValue.new.choose_ad_types
-    # image_count = RandomValue.new.choose_image_counts
     define_attribute
     if ad_type == "gif"
       gif = Gif.new
@@ -26,22 +24,6 @@ module PostsHelper
     @image_count = image_counts.sample
   end
 end
-
-# -------------- #
-
-# class RandomValue
-  # def choose_ad_types
-  #   ad_types = ["gif", "image", "movie"]
-  #   # sampleメソッドを使って配列の中身をランダムに取得
-  #   ad_types.sample
-  # end
-
-  # def choose_image_counts
-  #   image_counts = [1, 2]
-  #   # sampleメソッドを使って配列の中身をランダムに取得
-  #   image_counts.sample
-  # end
-# end
 
 class AdTemplate
   def initialize
@@ -101,3 +83,48 @@ class Movie < AdTemplate
     return_src
   end
 end
+
+# -------------- #
+
+# module PostsHelper
+#   attr_reader :ad_type, :image_count
+
+  # def ad
+  #   define_attribute
+  #   ad = AdTemplate.new
+  #   ad.return_html(ad_type, image_count)
+  # end
+
+#   private
+
+#   def define_attribute
+#     ad_types = ["gif", "image", "movie"]
+#     image_counts = [1, 2]
+#     @ad_type = ad_types.sample
+#     @image_count = image_counts.sample
+#   end
+# end
+
+# class AdTemplate
+#   def return_html(ad_type, image_count)
+#     @html = ''
+#     @html += '<header>株式会社〇〇</header>'
+#     if ad_type == "gif" && image_count == 2
+#       @html += '<iframe id="player1" type="text/html" width="700px" height="350px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
+#       @html += '<iframe id="player2" type="text/html" width="700px" height="350px" src="/assets/ad_gif2.png" frameborder="0"></iframe>'
+
+#     elsif ad_type == "gif" && image_count == 1
+#       @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_gif1.png" frameborder="0"></iframe>'
+
+#     elsif ad_type == "image"
+#       @html += '<iframe id="player" type="text/html" width="700px" height="700px" src="/assets/ad_image.png" frameborder="0"></iframe>'
+
+#     elsif ad_type == "movie"
+#       @html += '<iframe id="player" type="text/html" width="500px" height="500px" src="/assets/ad_movie.png" frameborder="0"></iframe>'
+
+#     end
+#     @html += '<footer>詳しくはコチラ</footer>'
+
+#     return @html.html_safe
+#   end
+# end
