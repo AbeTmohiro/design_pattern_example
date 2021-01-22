@@ -1,28 +1,28 @@
-module PostsHelper
+module AdsHelper
 
-  attr_reader :ad_type, :image_count
-  def ad
-    define_attribute
+  def ad(ad_type, image_count)
     if ad_type == "gif"
-      gif = Gif.new
-      gif.return_html(ad_type, image_count)
+      ad_instance = Gif.new
     elsif ad_type == "image"
-      image = Image.new
-      image.return_html(ad_type, image_count)
+      ad_instance = Image.new
     elsif ad_type == "movie"
-      movie = Movie.new
-      movie.return_html(ad_type, image_count)
+      ad_instance = Movie.new
     end
+
+    ad_instance.return_html(ad_type, image_count)
   end
 
   private
 
-  def define_attribute
-    ad_types = ["gif", "image", "movie"]
-    image_counts = [1, 2]
-    @ad_type = ad_types.sample
-    @image_count = image_counts.sample
-  end
+  # def ad_types
+  #   ad_types = ["gif", "image", "movie"]
+  #   ad_types.sample
+  # end
+
+  # def image_counts
+  #   image_counts = [1, 2]
+  #   image_counts.sample
+  # end
 end
 
 class AdTemplate
